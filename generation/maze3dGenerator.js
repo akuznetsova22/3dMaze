@@ -9,6 +9,16 @@ class Maze3dGenerator{
         this.row = row;
         this.col = col;
     }
+    isInMaze(cell){
+        if(cell[1]>=0 && cell[1] < this.row){
+            if(cell[2]>=0 && cell[2] < this.col){
+                if(cell[0]>=0 && cell[0] < this.level){  
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     generate(start, finish){
         const maze = this.createWalls()
         return new Maze3d(maze, start, finish)

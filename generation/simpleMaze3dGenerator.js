@@ -5,23 +5,15 @@ class SimpleMaze3dGenerator extends Maze3dGenerator{
         super(level, row, col);
 
     }
-    isInMaze(cell){
-        if(cell[1]>=0 && cell[1] < this.row){
-            if(cell[2]>=0 && cell[2] < this.col){
-                if(cell[0]>=0 && cell[0] < this.level){  
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    generate(){
-        //creating maze with all walls
 
+    
+    generate(){
         //randomly selecting start and end locations
         const start = [Math.floor(Math.random() * this.level), Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
         const finish = [Math.floor(Math.random() * this.level), Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
         const directions = [[0,1,0], [0,0,1], [0,0,-1],[0,-1,0],[1,0,0], [-1,0,0]];
+        
+        //creating maze with all walls
         let maze = super.generate(start, finish);
         let step;
         let prevLocation;

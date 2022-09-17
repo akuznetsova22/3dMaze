@@ -1,5 +1,4 @@
 import Maze3dGenerator from "./maze3dGenerator.js";
-import Maze3d from "./maze3d.js";
 
 class SimpleMaze3dGenerator extends Maze3dGenerator{
     constructor(level, row, col){

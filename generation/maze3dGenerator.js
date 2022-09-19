@@ -36,9 +36,9 @@ class Maze3dGenerator{
         }
         return maze;
     }
+
     measureAlgorithmTime(){
         let start = new Date().getTime();
-        console.log(start);
         this.generate();
         let end = new Date().getTime();
         const runTime = end- start;

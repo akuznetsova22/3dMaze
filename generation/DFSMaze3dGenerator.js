@@ -17,15 +17,24 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
         }
         return validNeighbours;
     }
-    getUnvisitedNeighbours(visited, cell){
+    getUnvisitedNeighbours(maze,cell){
         const neighbours = this.getNeighbours(cell);
         let unvisited = new Array();
         for (let neighbour of neighbours){
-            if (!visited.includes(String(neighbour))){
+            if (maze.maze[neighbour[0]][neighbour[1]][neighbour[2]][6] === false){
                 unvisited.push(neighbour);
             }
         }
         return unvisited;
+    }
+    addVisitedIdentifier(maze){
+        for (let level = 0; level < this.level; level++){
+            for (let row = 0; row < this.row; row++){
+                for (let col = 0; col < this.col; col++){
+                    maze.maze[level][row][col].push(false)
+                }
+            }
+        } return maze;
     }
     generate(){
         const start = [0, Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
@@ -34,12 +43,15 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
 
         //creating maze with all walls
         let maze = super.generate(start, finish);
+        maze = this.addVisitedIdentifier(maze);
         let step;
-        let currLocation = start;
         let n;
+        let currLocation = start;
+        //marking cell as visited 
+        maze.maze[currLocation[0]][currLocation[1]][currLocation[2]][6] = true;
         visited.push(String(currLocation))
         while (visited.length){
-            let unvisited = this.getUnvisitedNeighbours(visited, currLocation);
+            let unvisited = this.getUnvisitedNeighbours(maze,currLocation);
             //checking if current cell has unvisited neighbours
             if (unvisited.length){
                 n = unvisited[0];
@@ -66,14 +78,15 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
                 } 
                 //adding the neighbour to visited and removing from unvisited
 
-                visited.push(String(n));
+                visited.push(String(n))
                 currLocation = n;
+                //marking cell as visited
+                maze.maze[n[0]][n[1]][n[2]][6] = true;
             } else {
                 let newLocation = visited.pop();
-                currLocation = [Number(newLocation[0]), Number(newLocation[1]), Number(newLocation[2])]
+                currLocation = [Number(newLocation[0]), Number(newLocation[2]), Number(newLocation[4])]
             }
         }
-        finish = [Number(currLocation[0]), Number(currLocation[2]), Number(currLocation[4])];
         console.log(maze.toString())
         return maze;
     }

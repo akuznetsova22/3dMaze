@@ -28,8 +28,8 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
         return unvisited;
     }
     generate(){
-        const start = [Math.floor(Math.random() * this.level), Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
-        const finish = [Math.floor(Math.random() * this.level), Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
+        const start = [0, Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
+        let finish = [this.level-1, Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
         let visited = new Array();
 
         //creating maze with all walls
@@ -65,15 +65,15 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
                     maze.maze[n[0]][n[1]][n[2]][1] = false;
                 } 
                 //adding the neighbour to visited and removing from unvisited
+
                 visited.push(String(n));
                 currLocation = n;
-
             } else {
                 let newLocation = visited.pop();
-                currLocation = [Number(newLocation[0]),Number(newLocation[1]), Number(newLocation[2])]
+                currLocation = [Number(newLocation[0]), Number(newLocation[1]), Number(newLocation[2])]
             }
-
         }
+        finish = [Number(currLocation[0]), Number(currLocation[2]), Number(currLocation[4])];
         console.log(maze.toString())
         return maze;
     }
@@ -82,5 +82,5 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
 export default DFSMaze3dGenerator;
 
 
-let newMaze = new DFSMaze3dGenerator(2,6,5);
+let newMaze = new DFSMaze3dGenerator(2,7,6);
 console.log(newMaze.measureAlgorithmTime())

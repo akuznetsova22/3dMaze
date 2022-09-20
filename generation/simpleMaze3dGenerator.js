@@ -29,25 +29,7 @@ class SimpleMaze3dGenerator extends Maze3dGenerator{
                 currLocation = newLocation;
 
                 //breaking the walls for that move to be possible
-                if(step[0] === 1){
-                    maze.maze[currLocation[0]][currLocation[1]][currLocation[2]][5] = true;
-                    maze.maze[prevLocation[0]][prevLocation[1]][prevLocation[2]][4] = true;
-                } else if (step[0] === -1){
-                    maze.maze[currLocation[0]][currLocation[1]][currLocation[2]][4] = true;
-                    maze.maze[prevLocation[0]][prevLocation[1]][prevLocation[2]][5] = true;
-                } else if (step[1] === 1){
-                    maze.maze[currLocation[0]][currLocation[1]][currLocation[2]][3] = false;
-                    maze.maze[prevLocation[0]][prevLocation[1]][prevLocation[2]][2] = false;
-                } else if (step[1] === -1){
-                    maze.maze[currLocation[0]][currLocation[1]][currLocation[2]][2] = false;
-                    maze.maze[prevLocation[0]][prevLocation[1]][prevLocation[2]][3] = false;
-                } else if (step[2] === 1){
-                    maze.maze[currLocation[0]][currLocation[1]][currLocation[2]][0] = false;
-                    maze.maze[prevLocation[0]][prevLocation[1]][prevLocation[2]][1] = false;
-                } else if (step[2] === -1){
-                    maze.maze[currLocation[0]][currLocation[1]][currLocation[2]][1] = false;
-                    maze.maze[prevLocation[0]][prevLocation[1]][prevLocation[2]][0] = false;
-                }     
+                maze = this.breakWalls(maze,prevLocation,currLocation,step);
             }   
         } while (currLocation[0]!== finish[0] || currLocation[1]!== finish[1] || currLocation[2]!== finish[2])
         console.log(maze.toString())

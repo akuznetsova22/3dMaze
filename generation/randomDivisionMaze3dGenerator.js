@@ -89,12 +89,25 @@ class RandomDivisionMaze3dGenerator extends Maze3dGenerator{
             }
         }
         maze = this.buildMaze(maze);
-        console.log(maze.toString())
+        if (start[2]>0){
+            maze.maze[start[0]][start[1]][start[2]] = [false,false,false,false,true,false]
+        } else {
+            maze.maze[start[0]][start[1]][start[2]] = [true,false,false,false,true,false]
 
+        }
+        if (finish[2]>0){
+            maze.maze[finish[0]][finish[1]][finish[2]] = [false,false,false,false,false,true]
+        } else {
+            maze.maze[finish[0]][finish[1]][finish[2]] = [true,false,false,false,false,true]
+
+        }
+        
     }
 }
 export default RandomDivisionMaze3dGenerator;
 
 
-let newMaze = new RandomDivisionMaze3dGenerator(2,7,6);
-console.log(newMaze.measureAlgorithmTime())
+let maze = new RandomDivisionMaze3dGenerator(2,7,6);
+let newMaze = maze.generate();
+console.log(maze);
+console.log(maze.measureAlgorithmTime())

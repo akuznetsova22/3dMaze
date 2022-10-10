@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        label{
+            padding-left: 5px;
+            display: inline-block;
+            text-align: left;
+            margin-bottom:5px;
+            min-width:180px;
+        }
+        input, select{
+            border: 1px solid #333;
+            margin-bottom:5px;
+            padding-left:5px;
+            min-width:100px;
+
+        }
+        #graph{
+            padding: 10px;
+            display:grid;
+        }
+
+        button{
+            margin: 5px;
+            margin-bottom: 10px;
+            margin-left: 190px;
+        }
+        .cell{
+            width: 40px;
+            height:40px;
+            border: 1px solid black;
+            text-align: center;
+            font-size: 1.5rem;
+            display: inline-block;
+            align-items: center;
+            padding: 5px;
+            padding-top:10px;
+
+
+        }
+        #up, #down, #reset{
+            margin: 0;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="game>">
+    <section id="maze">
+        <div>
+            <button id="up" disabled hidden>Go Up</button>
+            <button id="down" disabled hidden>Go Down</button>
+            <button id="reset" hidden>Restart</button>
+        </div>
+        <div id="graph"></div>
+    </section>
+    <div id="inputs">
+        <div>
+            <label for="levels">Number of levels:</label>
+            <input id="levels" type="text" required pattern="\{d}">
+        </div>
+       <div>
+        <label for="rows">Number of rows:</label>
+        <input id="rows" type="text" required pattern="\{d}">
+       </div>
+       <div>
+        <label for="cols">Number of columns:</label>
+        <input id="cols" type="text" required pattern="\{d}">
+       </div>
+        <button  type='submit' id="start">Start New Game</button>
+        <div>
+            <label for="algo">Search Algo: </label>
+            <select id="algo">
+                <option>DFS</option>
+                <option>BFS</option>
+                <option>A*</option>
+            </select>
+        </div>
+        <button id='solve'>Solve Game</button>
+
+    </div>
+    </div>
+
+    <script src="/generation/maze3d.js" type="module"></script>
+    <script src="/generation/DFSMaze3dGenerator.js" type="module"></script>
+    <script>
+
+        const levels = document.getElementById('levels');
+        const rows = document.getElementById('rows');
+        const cols = document.getElementById('cols');
+        const btnStart = document.getElementById('start');
+        const btnSolve = document.getElementById('solve');
+        const searchAlgo = document.getElementById('algo');
+        const mazeField = document.getElementById('graph');
+        const btnUp = document.getElementById('up');
+        const btnDown = document.getElementById('down');
+        const btnReset = document.getElementById('reset');
+
+
+    
+        //let maze = new DFSMaze3dGenerator(nLevels, nRows, nCols);
+
+        function mazeWidth(cols){
+            let size = '';
+            for (let i=0; i< cols; i++){
+                size += '1fr '
+            }
+            return size
+
+        }
+        function markCurrent(cell){
+            cell.style.borderColor = 'blue';
+            cell.textContent = 'X';
+            cell.style.color = 'blue';
+
+        }
+        btnStart.addEventListener('click', () =>{
+            const nLevels = levels.value;
+            const nRows = rows.value;
+            const nCols = cols.value;
+            mazeField.style.width = nCols * 41 + 'px';
+            mazeField.style.gridTemplateColumns = mazeWidth(nCols);
+            for (let i = 0; i< nRows; i++){
+                for (let j = 0; j < nCols; j++){
+                    let square = document.createElement('div');
+                    square.classList.add('cell');
+                    square.id = `r${i+1}c${j+1}`
+                    mazeField.append(square);
+                }
+            }
+            btnDown.hidden= false;
+            btnUp.hidden=false;
+            btnReset.hidden = false;
+            let start = document.getElementById('r1c1');
+            markCurrent(start);
+        });
+
+    </script>
+</body>
+</html>

@@ -30,8 +30,8 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
     }
 
     generate(){
-        const start = [0, Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
-        let finish = [this.level-1, Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
+        const start = [0, 0, 0];
+        let finish = [this.level-1, this.row-1, this.col-1];
         let visited = new Array();
 
         //creating maze with all walls
@@ -53,17 +53,16 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
                 //removing the wall beween the current cell and chosen unvisited neighbour
                 step = [n[0] - currLocation[0], n[1] - currLocation[1], n[2] - currLocation[2]]
                 maze = this.breakWalls(maze, currLocation,n,step);
-                //adding the neighbour to visited and removing from unvisited
+                //adding the neighbour to visited
                 visited.push(n)
                 currLocation = n;
                 //marking cell as visited
                 maze.maze[n[0]][n[1]][n[2]][6] = true;
             } else {
-                let newLocation = visited.pop();
-                currLocation = newLocation
+                currLocation = visited.pop();
             }
+
         }
-        console.log(maze.toString())
         return maze;
     }
 }
@@ -71,5 +70,6 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
 export default DFSMaze3dGenerator;
 
 
-let newMaze = new DFSMaze3dGenerator(2,7,6);
-console.log(newMaze.measureAlgorithmTime())
+let maze = new DFSMaze3dGenerator(2,3,3)
+let newMaze = maze.generate();
+console.log(maze.measureAlgorithmTime())

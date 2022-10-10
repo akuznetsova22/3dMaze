@@ -32,11 +32,12 @@ class SimpleMaze3dGenerator extends Maze3dGenerator{
                 maze = this.breakWalls(maze,prevLocation,currLocation,step);
             }   
         } while (currLocation[0]!== finish[0] || currLocation[1]!== finish[1] || currLocation[2]!== finish[2])
-        console.log(maze.toString())
         return maze;
     }
 }
 export default SimpleMaze3dGenerator;
 
-let newMaze = new SimpleMaze3dGenerator(2,7,6);
-console.log(newMaze.measureAlgorithmTime())
+let maze = new SimpleMaze3dGenerator(2,7,6);
+let newMaze = maze.generate();
+console.log(newMaze.toString())
+console.log(maze.measureAlgorithmTime())

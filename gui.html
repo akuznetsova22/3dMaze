@@ -36,7 +36,6 @@
         .cell{
             width: 40px;
             height:40px;
-            border: 1px solid black;
             text-align: center;
             font-size: 1.5rem;
             display: inline-block;
@@ -48,6 +47,9 @@
         }
         #up, #down, #reset{
             margin: 0;
+        }
+        #up{
+            margin-left: 10px;
         }
 
 
@@ -90,60 +92,7 @@
     </div>
     </div>
 
-    <script src="/generation/maze3d.js" type="module"></script>
-    <script src="/generation/DFSMaze3dGenerator.js" type="module"></script>
-    <script>
-
-        const levels = document.getElementById('levels');
-        const rows = document.getElementById('rows');
-        const cols = document.getElementById('cols');
-        const btnStart = document.getElementById('start');
-        const btnSolve = document.getElementById('solve');
-        const searchAlgo = document.getElementById('algo');
-        const mazeField = document.getElementById('graph');
-        const btnUp = document.getElementById('up');
-        const btnDown = document.getElementById('down');
-        const btnReset = document.getElementById('reset');
-
-
-    
-        //let maze = new DFSMaze3dGenerator(nLevels, nRows, nCols);
-
-        function mazeWidth(cols){
-            let size = '';
-            for (let i=0; i< cols; i++){
-                size += '1fr '
-            }
-            return size
-
-        }
-        function markCurrent(cell){
-            cell.style.borderColor = 'blue';
-            cell.textContent = 'X';
-            cell.style.color = 'blue';
-
-        }
-        btnStart.addEventListener('click', () =>{
-            const nLevels = levels.value;
-            const nRows = rows.value;
-            const nCols = cols.value;
-            mazeField.style.width = nCols * 41 + 'px';
-            mazeField.style.gridTemplateColumns = mazeWidth(nCols);
-            for (let i = 0; i< nRows; i++){
-                for (let j = 0; j < nCols; j++){
-                    let square = document.createElement('div');
-                    square.classList.add('cell');
-                    square.id = `r${i+1}c${j+1}`
-                    mazeField.append(square);
-                }
-            }
-            btnDown.hidden= false;
-            btnUp.hidden=false;
-            btnReset.hidden = false;
-            let start = document.getElementById('r1c1');
-            markCurrent(start);
-        });
-
-    </script>
+    <script src="main.js" type="module"></script>
+   
 </body>
 </html>

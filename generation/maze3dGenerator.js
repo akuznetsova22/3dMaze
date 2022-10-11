@@ -35,12 +35,12 @@ class Maze3dGenerator{
     }
     createWalls(){
         let maze = new Array(this.level);
-        for (let i = 0; i < maze.length; i++){
+        for (let i = 0; i < this.level; i++){
             maze[i] = new Array(this.row);
-            for (let j = 0; j < maze[0].length; j++){
+            for (let j = 0; j < this.row; j++){
                 maze[i][j] = new Array(this.col);
-                for (let k = 0; k < maze[0][0].length; k++){
-                    maze[i][j][k] = [true, true, true, true, false, false]
+                for (let k = 0; k < this.col; k++){
+                    maze[i][j][k] = [true, true, true, true, false, false,false];
                 }
             }
         }

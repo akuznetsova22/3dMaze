@@ -4,8 +4,6 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
     constructor(level, row, col){
         super(level, row, col);
     }
-
-
     getNeighbours(cell){
         const directions = [[0,1,0], [0,0,1], [0,0,-1],[0,-1,0],[1,0,0], [-1,0,0]];
         let neighbours = new Array(directions.length);
@@ -36,7 +34,6 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
 
         //creating maze with all walls
         let maze = super.generate(start, finish);
-        maze = this.addVisitedIdentifier(maze);
         let step;
         let n;
         let currLocation = start;
@@ -70,6 +67,6 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
 export default DFSMaze3dGenerator;
 
 
-let maze = new DFSMaze3dGenerator(2,3,3)
-let newMaze = maze.generate();
-console.log(maze.measureAlgorithmTime())
+//let maze = new DFSMaze3dGenerator(2,3,3)
+//let newMaze = maze.generate();
+//console.log(maze.measureAlgorithmTime())

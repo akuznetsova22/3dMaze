@@ -11,7 +11,9 @@ const btnUp = document.getElementById('up');
 const btnDown = document.getElementById('down');
 const btnReset = document.getElementById('reset');
 
-
+const up = '\u{2191}';
+const down = '\u{2193}';
+const upDown = '\u{2195}';
 
 
 function mazeWidth(cols){
@@ -24,7 +26,6 @@ function mazeWidth(cols){
 }
 function markCurrent(cell){
     cell.textContent = 'X';
-    cell.style.color = 'blue';
 
 }
 btnStart.addEventListener('click', () =>{
@@ -37,40 +38,262 @@ btnStart.addEventListener('click', () =>{
         for (let j = 0; j < nCols; j++){
             let square = document.createElement('div');
             square.classList.add('cell');
-            square.id = `r${i+1}c${j+1}`
+            square.id = `${i+1}${j+1}`
             mazeField.append(square);
         }
     }
     btnDown.hidden= false;
     btnUp.hidden=false;
     btnReset.hidden = false;
-    let start = document.getElementById('r1c1');
-    let maze = new DFSMaze3dGenerator(nLevels, nRows, nCols).generate();
+    let start = document.getElementById('11');
+    let currLoc = Number(start.id);
+    const maze = new DFSMaze3dGenerator(nLevels, nRows, nCols).generate();
     console.log(maze.toString())
     let currLevel = 0;
     drawLevel(maze, currLevel);
+    /*
+    if(maze.maze[0][0][0][4] === true ){
+        btnUp.disabled=false;
+    }
+    if (maze.maze[0][0][0][5] === true ){
+        btnDown.disabled= false;
+    };*/
     markCurrent(start);
-    playGame(maze);
+
+    document.addEventListener('keydown', e => {
+        let currRow = Math.floor(currLoc / 10);
+        let currCol = currLoc % 10;
+        let currCell = document.getElementById(`${currRow}${currCol}`);
+        currLoc = Number(currCell.id);
+        console.log(currLoc);        
+
+        if (e.code === 'ArrowDown'){
+            if (currRow < rows.value && maze.maze[currLevel][currRow -1][currCol -1][2] === false){
+                let newLoc = currLoc + 10;
+                if(maze.maze[currLevel][currRow -1][currCol -1][4] === true && maze.maze[currLevel][currRow][currCol][5] === true  ){
+                    currCell.textContent = upDown;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][4] === true ){
+                    currCell.textContent = up;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][5] === true ){
+                    currCell.textContent = down;
+                } else {
+                    currCell.textContent = '';
+                }
+                currCell = document.getElementById(String(newLoc));
+                currLoc = Number(currCell.id);
+                console.log(currLoc);
+                /*
+                if(maze.maze[currLevel][currRow][currCol -1][4] === true ){
+                    btnUp.disabled=false;
+                }
+                if (maze.maze[currLevel][currRow][currCol -1][5] === true ){
+                    btnDown.disabled= false;
+                };*/
+                markCurrent(currCell);
+            } else {
+                alert('Cannot go there!')
+            }
+        }
+
+        if (e.code === 'ArrowUp'){
+            if (currRow > 0 && maze.maze[currLevel][currRow -1][currCol -1][3] === false){
+                let newLoc = currLoc - 10;
+                if(maze.maze[currLevel][currRow -1][currCol -1][4] === true && maze.maze[currLevel][currRow][currCol][5] === true  ){
+                    currCell.textContent = upDown;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][4] === true ){
+                    currCell.textContent = up;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][5] === true ){
+                    currCell.textContent = down;
+                } else {
+                    currCell.textContent = '';
+                }
+                currCell = document.getElementById(String(newLoc));
+                currLoc = Number(currCell.id);
+                console.log(currLoc);
+                /*
+                if(maze.maze[currLevel][currRow -2][currCol -1][4] === true ){
+                    btnUp.disabled=false;
+                }
+                if (maze.maze[currLevel][currRow -2][currCol -1][5] === true ){
+                    btnDown.disabled= false;
+                };*/
+                markCurrent(currCell);
+            }else {
+                alert('Cannot go there!')
+            }
+        };
+        if (e.code === 'ArrowLeft'){
+            if (currCol > 0 && maze.maze[currLevel][currRow -1][currCol -1][0] === false){
+                let newLoc = currLoc - 1;
+                if(maze.maze[currLevel][currRow -1][currCol -1][4] === true && maze.maze[currLevel][currRow][currCol][5] === true  ){
+                    currCell.textContent = upDown;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][4] === true ){
+                    currCell.textContent = up;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][5] === true ){
+                    currCell.textContent = down;
+                } else {
+                    currCell.textContent = '';
+                }
+                currCell = document.getElementById(String(newLoc));
+                currLoc = Number(currCell.id);
+                console.log(currLoc);
+                /*
+                if(maze.maze[currLevel][currRow -1][currCol -2][4] === true ){
+                    btnUp.disabled=false;
+                }
+                if (maze.maze[currLevel][currRow -1][currCol -2][5] === true ){
+                    btnDown.disabled= false;
+                };*/
+                markCurrent(currCell);
+            }else {
+                alert('Cannot go there!')
+            }
+        };
+
+        if (e.code === 'ArrowRight'){
+            if (currCol < cols.value && maze.maze[currLevel][currRow -1][currCol -1][1] === false){
+                let newLoc = currLoc + 1;
+                if(maze.maze[currLevel][currRow -1][currCol -1][4] === true && maze.maze[currLevel][currRow][currCol][5] === true  ){
+                    currCell.textContent = upDown;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][4] === true ){
+                    currCell.textContent = up;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][5] === true ){
+                    currCell.textContent = down;
+                } else {
+                    currCell.textContent = '';
+                }
+                currCell = document.getElementById(String(newLoc));
+                currLoc = Number(currCell.id);
+                console.log(currLoc);
+                /*
+                if(maze.maze[currLevel][currRow -1][currCol][4] === true ){
+                    btnUp.disabled=false;
+                }
+                if (maze.maze[currLevel][currRow -1][currCol][5] === true ){
+                    btnDown.disabled= false;
+                };*/
+                markCurrent(currCell);
+            }else {
+                alert('Cannot go there!')
+            }
+        };
+        if (e.code === 'Digit2'){
+            if (maze.maze[currLevel][currRow -1][currCol -1][4] === true){
+                currLevel+=1;
+                if(maze.maze[currLevel][currRow -1][currCol -1][4] === true && maze.maze[currLevel][currRow][currCol][5] === true  ){
+                    currCell.textContent = upDown;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][4] === true ){
+                    currCell.textContent = up;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][5] === true ){
+                    currCell.textContent = down;
+                } else {
+                    currCell.textContent = '';
+                }
+                let newLoc = currLoc;
+                console.log(currLevel);
+
+
+                drawLevel(maze, currLevel);
+                currCell = document.getElementById(String(newLoc));
+                currLoc = Number(currCell.id);
+                console.log(currLoc);
+                /*
+                if(maze.maze[currLevel][currRow -1][currCol][4] === true ){
+                    btnUp.disabled=false;
+                }
+                if (maze.maze[currLevel][currRow -1][currCol][5] === true ){
+                    btnDown.disabled= false;
+                };*/
+                markCurrent(currCell);
+                if (currLevel === levels -1){
+                    let finish = document.getElementById(`${rows.value}${cols.value}`);
+                    finish.textContent = 'G';
+                }
+            }else {
+                alert('Cannot go there!');
+            }
+        }
+        if (e.code === 'Digit3'){
+            if (maze.maze[currLevel][currRow -1][currCol -1][5] === true){
+                currLevel-=1;
+                if(maze.maze[currLevel][currRow -1][currCol -1][4] === true && maze.maze[currLevel][currRow][currCol][5] === true  ){
+                    currCell.textContent = upDown;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][4] === true ){
+                    currCell.textContent = up;
+                } else if (maze.maze[currLevel][currRow -1][currCol -1][5] === true ){
+                    currCell.textContent = down;
+                } else {
+                    currCell.textContent = '';
+                }
+                let newLoc = currLoc;
+                drawLevel(maze, currLevel);
+                currCell = document.getElementById(String(newLoc));
+                currLoc = Number(currCell.id);
+                console.log(currLoc);
+                /*
+                if(maze.maze[currLevel][currRow -1][currCol][4] === true ){
+                    btnUp.disabled=false;
+                }
+                if (maze.maze[currLevel][currRow -1][currCol][5] === true ){
+                    btnDown.disabled= false;
+                };*/
+                markCurrent(currCell);
+            }else {
+                alert('Cannot go there!');
+            }
+        }
+        
+
+    });
+
+    btnReset.addEventListener('click', () => {
+        let currRow = Math.floor(Number(currLoc) / 10);
+        let currCol = Number(currLoc) % 10;
+        let currCell = document.getElementById(`${currRow}${currCol}`);
+        if(maze.maze[currLevel][currRow -1][currCol -1][4] === true && maze.maze[currLevel][currRow][currCol][5] === true  ){
+            currCell.textContent = upDown;
+            btnDown.disabled= false;
+            btnUp.disabled=false;
+        } else if (maze.maze[currLevel][currRow -1][currCol -1][4] === true ){
+            currCell.textContent = up;
+            btnUp.disabled=false;
+        } else if (maze.maze[currLevel][currRow -1][currCol -1][5] === true ){
+            currCell.textContent = down;
+            btnDown.disabled= false;
+        } else {
+            currCell.textContent = '';
+        }
+        drawLevel(maze, currLevel);
+        markCurrent(start);
+        if(maze.maze[0][0][0][4] === true ){
+            btnUp.disabled=false;
+        }
+        if (maze.maze[0][0][0][5] === true ){
+            btnDown.disabled= false;
+        };
+
+    });
+
 });
 
 
 function drawLevel(maze,level){
-    const up = '\u{2191}';
-    const down = '\u{2193}';
-    const upDown = '\u{2195}';
     for (let row = 0; row < maze.maze[0].length; row++){
         for (let col = 0; col < maze.maze[0][0].length; col++){
-            let cell = document.getElementById(`r${row+1}c${col+1}`)
+            let cell = document.getElementById(`${row+1}${col+1}`)
             if(row === 0){
                 cell.style.borderTop = '1px solid black'
 
             }
             if(maze.maze[level][row][col][0] === true){
                 cell.style.borderLeft = '1px solid black'
-
+            } else {
+                cell.style.borderLeft = 'none'
             }
             if(maze.maze[level][row][col][2] === true){
                 cell.style.borderBottom = '1px solid black'
+            }else {
+                cell.style.borderBottom = 'none'
             }
             if(maze.maze[level][row][col][4] === true && maze.maze[level][row][col][5] === true  ){
                 cell.textContent = upDown;
@@ -78,6 +301,8 @@ function drawLevel(maze,level){
                 cell.textContent = up;
             } else if (maze.maze[level][row][col][5] === true ){
                 cell.textContent = down;
+            } else {
+                cell.textContent ='';
             }
             if (col === maze.maze[0][0].length-1){
                 cell.style.borderRight = '1px solid black'
@@ -86,8 +311,5 @@ function drawLevel(maze,level){
     }
 };
 
-function playGame(maze){
-    let currLocation = document.getElementById('r1c1');
-    console.log(currLocation);
-}
+
 

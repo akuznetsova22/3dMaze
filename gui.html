@@ -5,65 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        *{
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        }
-        label{
-            padding-left: 5px;
-            display: inline-block;
-            text-align: left;
-            margin-bottom:5px;
-            min-width:180px;
-        }
-        input, select{
-            border: 1px solid #333;
-            margin-bottom:5px;
-            padding-left:5px;
-            min-width:100px;
-
-        }
-        #graph{
-            padding: 10px;
-            display:grid;
-        }
-
-        button{
-            margin: 5px;
-            margin-bottom: 10px;
-            margin-left: 190px;
-        }
-        .cell{
-            width: 40px;
-            height:40px;
-            text-align: center;
-            font-size: 1.5rem;
-            display: inline-block;
-            align-items: center;
-            padding: 5px;
-            padding-top:10px;
-
-
-        }
-        #up, #down, #reset{
-            margin: 0;
-        }
-        #up{
-            margin-left: 10px;
-        }
-
-
-    </style>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <div id="game>">
+        <div id="welcome">
+            <h1>Welcome to the Maze game!</h1>
+            <p>Enter desired size of the maze and press button to start</p> 
+        </div>
     <section id="maze">
+
+        <div id="instructions" hidden>
+            <p>Press arrows to move around the maze. </p>
+            <p>Watch indicators below to see when a ladder to another level is available.  Press 2 to move to level above. 3 - to move to level below.</p>
+            <p>Restart button above will move you to the starting location.</p>
+            <p id="luck">Good luck!</p>
+        </div>
         <div>
-            <button id="up" disabled hidden>Go Up</button>
-            <button id="down" disabled hidden>Go Down</button>
+            <button id="up" disabled hidden>Ladder Up</button>
+            <button id="down" disabled hidden>Ladder Down</button>
             <button id="reset" hidden>Restart</button>
         </div>
+        <h2 id="lHeader" hidden></h2>
         <div id="graph"></div>
+        <p id="error" hidden>Cannot go there!</p>
+        <h3 id="over" hidden>GAME OVER!</h3>
     </section>
     <div id="inputs">
         <div>
@@ -79,16 +45,15 @@
         <input id="cols" type="text" required pattern="{\d}">
        </div>
         <button  type='submit' id="start">Start New Game</button>
-        <div>
+        <div id="solution" hidden>
             <label for="algo">Search Algo: </label>
             <select id="algo">
                 <option>DFS</option>
                 <option>BFS</option>
                 <option>A*</option>
             </select>
+            <button id='solve'>Solve Game</button>
         </div>
-        <button id='solve'>Solve Game</button>
-
     </div>
     </div>
 

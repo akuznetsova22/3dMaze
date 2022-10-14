@@ -60,20 +60,54 @@ btnStart.addEventListener('click', e =>{
     markCurrent(start);
 
     btnSolve.addEventListener('click', () => {
+        //implementing search algorithm starting from current location
         let currRow = Math.floor(currLoc / 10);
         let currCol = currLoc % 10;
+        let currCell = document.getElementById(`${currRow}${currCol}`);
+        let showSolution = [];
         if (searchAlgo.value === 'DFS'){
             let solve = new DFS(maze).findSolution([currLevel, currRow - 1, currCol - 1],[levels.value - 1, rows.value - 1, cols.value - 1]);
             console.log(solve);
+        for (let i =0; i < solve.length; i++){
+            showSolution.push(solve[i])
         }
+        };
+        
+        //adding animation to show solution to the user
+        let idx = 0;
+        let timerId = setInterval(() => {
+            
+            //finding next cell
+            let nextMoveLevel = showSolution[idx][0];
+            let nextMoveRow = showSolution[idx][1] + 1;
+            let nextMoveCol = showSolution[idx][2] + 1;
+            
+            //restoring arrows in current cell
+            restoreArrows(maze, currLevel, currLoc, currCell);
+            
+            //making a move to the next cell
+            currLoc = nextMoveRow * 10 + nextMoveCol;
+            currLevel = nextMoveLevel;
+            currCell = document.getElementById(String(currLoc));
+            
+            //drawing the change to the user
+            drawLevel(maze, currLevel);
+            markCurrent(currCell); 
+            idx++
+        },300);
+        setTimeout(() => {clearInterval(timerId);}, 300 * showSolution.length);
+        G.hidden = false;
     });
 
     btnHint.addEventListener('click', () => {
+        //assigning current location 
         let currRow = Math.floor(currLoc / 10);
         let currCol = currLoc % 10;
         let idx = 0;
+        //setting the algorithm
         if (searchAlgo.value === 'DFS'){
             let solve = new DFS(maze).findSolution([0,0,0],[levels.value - 1, rows.value - 1, cols.value - 1]);
+            // finding the next best move
             for (let i = 0; i< solve.length; i++){
                 if (String(solve[i]) === String([currLevel, currRow - 1, currCol - 1])){
                     idx = i + 1;
@@ -81,15 +115,14 @@ btnStart.addEventListener('click', e =>{
                 }
             }
             let nextMove = solve[idx];
-            console.log(solve);
-            console.log(nextMove);
             let nextMoveLevel = nextMove[0];
             let nextMoveRow = nextMove[1] + 1;
             let nextMoveCol = nextMove[2] + 1;
-
+            // saving the context of the next move cell
             let hintCell = document.getElementById(`${nextMoveRow}${nextMoveCol}`);
             let currContent = hintCell.textContent;
-
+            
+            //setting the hint value
             if (currLevel === nextMoveLevel){
                 hintCell.textContent = 'X';
             }else if (currLevel < nextMoveLevel){
@@ -98,12 +131,15 @@ btnStart.addEventListener('click', e =>{
                 hintCell.textContent = down;
             }
             hintCell.style.color = 'red';
+            
+            //restoring cell value
             setTimeout(() => {
                 hintCell.textContent = currContent;
                 hintCell.style.color = 'black';
             },2000); 
-        }
+        };
     });
+    
     // creating move commands
     document.addEventListener('keydown', e => {
         // location current coordinates

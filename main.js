@@ -1,4 +1,5 @@
 import DFSMaze3dGenerator from "/generation/DFSMaze3dGenerator.js";
+import DFS from "./solver/DFS.js";
 
 const levels = document.getElementById('levels');
 const rows = document.getElementById('rows');
@@ -14,7 +15,8 @@ const errorMsg = document.getElementById('error');
 const instructions = document.getElementById('instructions');
 const levelTitle = document.getElementById('lHeader');
 const G = document.getElementById('over');
-const solution = document.getElementById('solution')
+const solution = document.getElementById('solution');
+const btnHint = document.getElementById('hint');
 
 const up = '\u{2191}';
 const down = '\u{2193}';
@@ -43,34 +45,8 @@ btnStart.addEventListener('click', e =>{
     solution.hidden = false;    
 
     // creating maze and drawing it on the console.
-    /*
-    let rememberedMaze = localStorage.getItem('maze');
-    console.log(rememberedMaze);
-    if (rememberedMaze){
-        let maze = JSON.parse(rememberedMaze);
-        console.log(rememberedMaze);
-
-    } else{
-        let maze = new DFSMaze3dGenerator(levels.value, rows.value, cols.value).generate().maze;
-        localStorage.setItem('maze', maze);
-    }
-    */
     const maze = new DFSMaze3dGenerator(levels.value, rows.value, cols.value).generate();
-    //localStorage.setItem('maze', JSON.stringify(maze));
     console.log(maze.toString());
-
-    // assinging starting coordinates
-    /*
-    let rememberedLocation = localStorage.getItem('location');
-    if (rememberedLocation){
-        currLoc = Number(rememberedLocation);
-        currLevel = Number(localStorage.getItem('level'));
-        console.log(currLoc);
-    } else {
-        let start = document.getElementById('11');
-        currLoc = Number(start.id);
-        currLevel = 0;
-    }*/
     
     let start = document.getElementById('11');
     let currLoc = Number(start.id);
@@ -83,6 +59,51 @@ btnStart.addEventListener('click', e =>{
     btnDisable(maze, currLevel, currLoc);
     markCurrent(start);
 
+    btnSolve.addEventListener('click', () => {
+        let currRow = Math.floor(currLoc / 10);
+        let currCol = currLoc % 10;
+        if (searchAlgo.value === 'DFS'){
+            let solve = new DFS(maze).findSolution([currLevel, currRow - 1, currCol - 1],[levels.value - 1, rows.value - 1, cols.value - 1]);
+            console.log(solve);
+        }
+    });
+
+    btnHint.addEventListener('click', () => {
+        let currRow = Math.floor(currLoc / 10);
+        let currCol = currLoc % 10;
+        let idx = 0;
+        if (searchAlgo.value === 'DFS'){
+            let solve = new DFS(maze).findSolution([0,0,0],[levels.value - 1, rows.value - 1, cols.value - 1]);
+            for (let i = 0; i< solve.length; i++){
+                if (String(solve[i]) === String([currLevel, currRow - 1, currCol - 1])){
+                    idx = i + 1;
+                    break;
+                }
+            }
+            let nextMove = solve[idx];
+            console.log(solve);
+            console.log(nextMove);
+            let nextMoveLevel = nextMove[0];
+            let nextMoveRow = nextMove[1] + 1;
+            let nextMoveCol = nextMove[2] + 1;
+
+            let hintCell = document.getElementById(`${nextMoveRow}${nextMoveCol}`);
+            let currContent = hintCell.textContent;
+
+            if (currLevel === nextMoveLevel){
+                hintCell.textContent = 'X';
+            }else if (currLevel < nextMoveLevel){
+                hintCell.textContent = up;
+            }else{
+                hintCell.textContent = down;
+            }
+            hintCell.style.color = 'red';
+            setTimeout(() => {
+                hintCell.textContent = currContent;
+                hintCell.style.color = 'black';
+            },2000); 
+        }
+    });
     // creating move commands
     document.addEventListener('keydown', e => {
         // location current coordinates
@@ -272,6 +293,7 @@ btnStart.addEventListener('click', e =>{
                 errorMsg.hidden = false;
             }
         }
+
     });
 
     btnReset.addEventListener('click', () => {

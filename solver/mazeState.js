@@ -8,7 +8,7 @@ class mazeState extends State{
         this.maze = maze;
         this.currState = [level, row, col];
         this.initialState = [0,0,0];
-        this.goalState = [this.maze.maze.length, this.maze.maze[0].length, this.maze.maze[0][0].length];
+        this.goalState = [this.maze.maze.length-1, this.maze.maze[0].length-1, this.maze.maze[0][0].length-1];
         this.state = [key, this.currState, this.initialState, this.goalState]
 
     }

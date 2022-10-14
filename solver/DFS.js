@@ -5,10 +5,11 @@ class DFS extends Searchable{
     constructor(search){
         super(search);
     }
-    findSolution(){
+    findSolution(start = [0,0,0], finish = [this.search.maze.length-1, this.search.maze[0].length-1, this.search.maze[0][0].length-1]){
         //initialising first node
-        let node = new Node(this.search, 0, 0, 0);
-        node.addNeighbours([0,0,0]);
+        let node = new Node(this.search, start[0], start[1], start[2]);
+        node.addNeighbours(start);
+        node.addAccessibleNeighbours(start);
 
         //setting frontier with first node in it
         let frontier = [];
@@ -25,7 +26,7 @@ class DFS extends Searchable{
             // choosing the deepest node from the frontier
             let currNode = frontier.pop();
             currNode.addNeighbours(currNode.state.currState);
-
+            currNode.addAccessibleNeighbours(currNode.state.currState);
             //returning solution if node contains goal state
             if (String(currNode.state.currState) === String(currNode.state.goalState)){
                 explored.push(currNode.state.currState);
@@ -40,6 +41,7 @@ class DFS extends Searchable{
                 //initialising child node
                 let newNode = new Node(this.search, node[0], node[1], node[2]);
                 newNode.addNeighbours(node);
+                newNode.addAccessibleNeighbours(node);
                 for (let i of frontier){
                     if (String(i.state.currState) === String(newNode.state.currState)){
                         newNode.frontier = 1;
@@ -59,10 +61,13 @@ class DFS extends Searchable{
         }
     return false;
     }
+
 }
 
 export default DFS;
+/*
 let maze = new DFSMaze3dGenerator(2,3,3)
 let newMaze = maze.generate();
 let dfsSearch = new DFS(newMaze);
 console.log(dfsSearch.findSolution());
+*/

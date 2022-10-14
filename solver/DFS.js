@@ -6,47 +6,58 @@ class DFS extends Searchable{
         super(search);
     }
     findSolution(){
+        //initialising first node
         let node = new Node(this.search, 0, 0, 0);
         node.addNeighbours([0,0,0]);
+
+        //setting frontier with first node in it
         let frontier = [];
         frontier.push(node);
         node.frontier = 1;
 
+        //setting explored to be empty
         let explored = [];
-       // while (true){
-        for (let i = 0; i < 5; i++){
+        while (true){
+            // return failure if the frontier is empty
             if (!frontier.length){
                 return false;
             }
-            let currNode = frontier.pop()
-            console.log('currnode:', currNode.state.currState);
-            currNode.neighbours = [];
+            // choosing the deepest node from the frontier
+            let currNode = frontier.pop();
             currNode.addNeighbours(currNode.state.currState);
-            console.log( explored);
-            console.log(explored.includes(currNode.state.currState))
+
+            //returning solution if node contains goal state
+            if (String(currNode.state.currState) === String(currNode.state.goalState)){
+                explored.push(currNode.state.currState);
+                return explored;
+            }
+            //adding node to the explored
             if (currNode.visited === 0){
                 explored.push(currNode.state.currState);
                 currNode.visited = 1;
             }
-            if (currNode.neighbours.includes(currNode.state.goalState)){
-                explored.push(currNode.state.goalState);
-                return explored;
-            }
-            //console.log(currNode.neighbours)
             for (let node of currNode.neighbours){
-                console.log('node:'+node)
-                console.log(frontier.includes(node));
-                console.log(explored.includes(node))
-                if(!frontier.includes(node) && !explored.includes(node)){
-                    let newNode = new Node(this.search, node[0], node[1], node[2]);
-                    newNode.addNeighbours(currNode.state.currState);
+                //initialising child node
+                let newNode = new Node(this.search, node[0], node[1], node[2]);
+                newNode.addNeighbours(node);
+                for (let i of frontier){
+                    if (String(i.state.currState) === String(newNode.state.currState)){
+                        newNode.frontier = 1;
+                    };
+                }
+                for (let j of explored){
+                    if (String(j) === String(newNode.state.currState)){
+                        newNode.visited = 1;
+                    };
+                }
+                if(newNode.visited === 0 && newNode.frontier === 0){
+                    //adding children nodes to the frontier if not visited and not in frontier
                     frontier.push(newNode);
-                    newNode.visited = 1;
-                    newNode.fronier = 1;
+                    newNode.frontier = 1;
                 }
             }
         }
-        return false;
+    return false;
     }
 }
 

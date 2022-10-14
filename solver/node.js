@@ -2,8 +2,6 @@ import mazeState from "./mazeState.js";
 
 class Node{
     static numNode = 0;
-    static visited = 0;
-    static frontier = 0;
     constructor(maze,level, row, col){
         this.maze = maze;
         this.level = level;
@@ -11,14 +9,14 @@ class Node{
         this.col = col;
         this.state = new mazeState(Node.numNode,maze,level,row, col);
         this.neighbours = [] ;
-        this.visited = Node.visited;
-        this.frontier = Node.frontier;
+        this.visited = 0;
+        this.frontier = 0;
         Node.numNode++;
     }
     isInMaze(cell){
-        if(cell[1]>=0 && cell[1] < this.maze.maze[0].length){
-            if(cell[2]>=0 && cell[2] < this.maze.maze[0][0].length){
-                if(cell[0]>=0 && cell[0] < this.maze.maze.length){  
+        if(cell[1] >=0 && cell[1] <= this.maze.maze[0].length){
+            if(cell[2] >=0 && cell[2] <= this.maze.maze[0][0].length){
+                if(cell[0] >=0 && cell[0] <= this.maze.maze.length){  
                     return true;
                 }
             }

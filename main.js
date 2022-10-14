@@ -20,7 +20,7 @@ const up = '\u{2191}';
 const down = '\u{2193}';
 const upDown = '\u{2195}';
 
-btnStart.addEventListener('click', () =>{
+btnStart.addEventListener('click', e =>{
     // creating design of the playing field with empty cells
     mazeField.innerHTML = '';
     mazeField.style.width = cols.value * 39 + 'px';

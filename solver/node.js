@@ -69,6 +69,7 @@ class Node{
                     accessibleNeighbours.push(neighbour);
                 }
             }
+            this.neighbours = [];
             this.neighbours = accessibleNeighbours;
         }
     }

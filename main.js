@@ -1,5 +1,7 @@
 import DFSMaze3dGenerator from "/generation/DFSMaze3dGenerator.js";
 import DFS from "./solver/DFS.js";
+import BFS from "./solver/BFS.js";
+
 
 const levels = document.getElementById('levels');
 const rows = document.getElementById('rows');
@@ -37,6 +39,7 @@ btnStart.addEventListener('click', e =>{
         }
     }
     // revealing buttons and fields 
+    G.hidden = true;
     btnDown.hidden = false;
     btnUp.hidden =false;
     btnReset.hidden = false;
@@ -71,7 +74,13 @@ btnStart.addEventListener('click', e =>{
         for (let i =0; i < solve.length; i++){
             showSolution.push(solve[i])
         }
-        };
+        } else if (searchAlgo.value === 'BFS'){
+            let solve = new BFS(maze).findSolution([currLevel, currRow - 1, currCol - 1],[levels.value - 1, rows.value - 1, cols.value - 1]);
+            console.log(solve);
+        for (let i =0; i < solve.length; i++){
+            showSolution.push(solve[i])
+        }
+        }
         
         //adding animation to show solution to the user
         let idx = 0;
@@ -92,7 +101,12 @@ btnStart.addEventListener('click', e =>{
             
             //drawing the change to the user
             drawLevel(maze, currLevel);
+            if (currLevel === levels.value -1){
+                let finish = document.getElementById(`${rows.value}${cols.value}`);
+                finish.textContent = 'G';
+            };
             markCurrent(currCell); 
+
             idx++
         },300);
         setTimeout(() => {clearInterval(timerId);}, 300 * showSolution.length);

@@ -1,3 +1,6 @@
+/**
+ * This class represents the maze
+ */
 class Maze3d{
     constructor(maze,s,g, playerLocation = s){
         this.maze = maze
@@ -5,6 +8,10 @@ class Maze3d{
         this.g = g;
         this.playerLocation = playerLocation;
     }
+    /**
+     * 
+     * @returns string representation of the maze
+     */
     toString(){
         /*
         cell values = [left, right, forward, backward, up, down]
@@ -115,7 +122,6 @@ let r5cell2 = [true, true, true, false, false, false];
 let r5cell3 = [true, false, true, false, true, false];
 let r5cell4 = [false, false, true, false, true, false];
 let r5cell5 = [false, true, true, true, true, false];
-
 
 let r6cell1 = [true, true, true, true, false, true];
 let r6cell2 = [true, true, true, true, false, true];

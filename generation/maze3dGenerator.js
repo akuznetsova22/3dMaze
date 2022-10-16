@@ -1,5 +1,7 @@
 import Maze3d from "./maze3d.js";
-
+/**
+ * this is an abstract class for maze generator
+ */
 class Maze3dGenerator{
     constructor(level, row, col){
         if (this.constructor === Maze3dGenerator) {
@@ -9,6 +11,11 @@ class Maze3dGenerator{
         this.row = row;
         this.col = col;
     }
+    /**
+     * checks whether given cell is in the maze
+     * @param {array} cell 
+     * @returns boolean
+     */
     isInMaze(cell){
         if(cell[1]>=0 && cell[1] < this.row){
             if(cell[2]>=0 && cell[2] < this.col){
@@ -19,6 +26,11 @@ class Maze3dGenerator{
         }
         return false;
     }
+    /**
+     * adds identifier to each cell used for controlling whether its been visited
+     * @param {Maze3d} maze 
+     * @returns Maze3d
+     */
     addVisitedIdentifier(maze){
         //each cell is added a boolean value identifying whether it has been visited
         for (let level = 0; level < this.level; level++){
@@ -29,10 +41,20 @@ class Maze3dGenerator{
             }
         } return maze;
     }
+    /**
+     * retruns an instance of class Maze3d
+     * @param {Array} start 
+     * @param {Array} finish 
+     * @returns Maze3d
+     */
     generate(start, finish){
         const maze = this.createWalls()
         return new Maze3d(maze, start, finish)
     }
+    /**
+     * creates maze with all walls
+     * @returns Maze3d
+     */
     createWalls(){
         let maze = new Array(this.level);
         for (let i = 0; i < this.level; i++){
@@ -46,6 +68,14 @@ class Maze3dGenerator{
         }
         return maze;
     }
+    /**
+     * breaks appropriate wall between cells
+     * @param {Maze3d} maze 
+     * @param {Array} prevCell 
+     * @param {Array} newCell 
+     * @param {Array} step 
+     * @returns Maze3d
+     */
     breakWalls(maze, prevCell, newCell, step){
         if(step[0] === 1){
             maze.maze[newCell[0]][newCell[1]][newCell[2]][5] = true;
@@ -69,6 +99,10 @@ class Maze3dGenerator{
         return maze;
     }
 
+    /**
+     * measures algorythms runtime
+     * @returns string
+     */
     measureAlgorithmTime(){
         let start = new Date().getTime();
         this.generate();

@@ -1,6 +1,9 @@
 import Searchable from "./searchable.js";
 import Node from "./node.js";
-import DFSMaze3dGenerator from "../generation/DFSMaze3dGenerator.js";
+//import DFSMaze3dGenerator from "../generation/DFSMaze3dGenerator.js";
+/**
+ * This class searches the problem solution through BFS algrythm
+ */
 class BFS extends Searchable{
     constructor(search){
         super(search);

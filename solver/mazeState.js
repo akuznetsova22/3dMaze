@@ -1,3 +1,6 @@
+/**
+ * This class represents state of the node of the maze
+ */
 import State from "./state.js";
 class mazeState extends State{
     constructor(key,maze, level, row, col){

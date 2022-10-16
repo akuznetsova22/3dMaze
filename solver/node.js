@@ -13,6 +13,11 @@ class Node{
         this.frontier = 0;
         Node.numNode++;
     }
+    /**
+     * indicates whether given coordinates are within the maze size
+     * @param {Array} cell 
+     * @returns boolean
+     */
     isInMaze(cell){
         if(cell[1] >=0 && cell[1] <= this.maze.maze[0].length){
             if(cell[2] >=0 && cell[2] <= this.maze.maze[0][0].length){
@@ -22,7 +27,10 @@ class Node{
             }
         }
         return false;
-    }
+    }    /**
+    * adds all possible neighbours of the current cell
+    * @param {Array} cell 
+    */
     addNeighbours(cell){
         const n = [];
         const directions = [[0,1,0], [0,0,1], [0,0,-1],[0,-1,0],[1,0,0], [-1,0,0]];
@@ -35,10 +43,15 @@ class Node{
         }
     
     }
+    /**
+    * only leaves accessible neighbours of the current cell
+    * @param {Array} cell 
+    */
     addAccessibleNeighbours(cell){
         let accessibleNeighbours = [];
         for (let neighbour of this.neighbours){
             let step = [neighbour[0] - cell[0], neighbour[1] - cell[1], neighbour[2] - cell[2]];
+            //checks cell borders and adds accessible neighbour coordinates to the list
             if (String(step) === String([0,1,0])){
                 if (this.maze.maze[cell[0]][cell[1]][cell[2]][2] === false){
                     accessibleNeighbours.push(neighbour);
@@ -69,7 +82,6 @@ class Node{
                     accessibleNeighbours.push(neighbour);
                 }
             }
-            this.neighbours = [];
             this.neighbours = accessibleNeighbours;
         }
     }

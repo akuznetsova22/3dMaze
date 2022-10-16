@@ -1,12 +1,16 @@
 import Maze3dGenerator from "./maze3dGenerator.js";
-
+/**
+ * This class generates maze using random walk
+ */
 class SimpleMaze3dGenerator extends Maze3dGenerator{
     constructor(level, row, col){
         super(level, row, col);
 
     }
-
-    
+    /**
+     * generates the maze
+     * @returns Maze3d
+     */
     generate(){
         //randomly selecting start and end locations
         const start = [Math.floor(Math.random() * this.level), Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
@@ -31,13 +35,15 @@ class SimpleMaze3dGenerator extends Maze3dGenerator{
                 //breaking the walls for that move to be possible
                 maze = this.breakWalls(maze,prevLocation,currLocation,step);
             }   
-        } while (currLocation[0]!== finish[0] || currLocation[1]!== finish[1] || currLocation[2]!== finish[2])
+        } while (currLocation[0]!== finish[0] || currLocation[1]!== finish[1] || currLocation[2] !== finish[2])
         return maze;
     }
 }
 export default SimpleMaze3dGenerator;
 
+/*
 let maze = new SimpleMaze3dGenerator(2,7,6);
 let newMaze = maze.generate();
 console.log(newMaze.toString())
 console.log(maze.measureAlgorithmTime())
+*/

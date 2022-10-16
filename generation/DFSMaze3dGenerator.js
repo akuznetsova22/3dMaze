@@ -1,21 +1,35 @@
 import Maze3dGenerator from "./maze3dGenerator.js";
-
+/**
+ * This class creates a Maze using DFS algorythm
+ */
 class DFSMaze3dGenerator extends Maze3dGenerator{
     constructor(level, row, col){
         super(level, row, col);
     }
+    /**
+     * returns all neighbours of the current cell
+     * @param {Array} cell 
+     * @returns array
+     */
     getNeighbours(cell){
         const directions = [[0,1,0], [0,0,1], [0,0,-1],[0,-1,0],[1,0,0], [-1,0,0]];
         let neighbours = new Array(directions.length);
         neighbours = directions.map(x => [x[0] + cell[0], x[1]+cell[1], x[2]+cell[2]]);
         let validNeighbours = [];
         for (let neighbour of neighbours){
+            //adds neighbour if it is in the maze dimentions
             if (this.isInMaze(neighbour)){
                 validNeighbours.push(neighbour)
             }
         }
         return validNeighbours;
     }
+    /**
+     * returns all unvisited neighbours of the cell
+     * @param {Maze3d} maze 
+     * @param {Array} cell 
+     * @returns array
+     */
     getUnvisitedNeighbours(maze,cell){
         const neighbours = this.getNeighbours(cell);
         let unvisited = new Array();
@@ -26,7 +40,10 @@ class DFSMaze3dGenerator extends Maze3dGenerator{
         }
         return unvisited;
     }
-
+    /**
+     * generates maze
+     * @returns Maze3d
+     */
     generate(){
         const start = [0, 0, 0];
         let finish = [this.level-1, this.row-1, this.col-1];

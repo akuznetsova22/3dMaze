@@ -1,3 +1,6 @@
+/**
+ * This is an abstract class representing the solver for the problem
+ */
 class Searchable {
     constructor(search){
         if (this.constructor === Searchable) {
@@ -5,11 +8,6 @@ class Searchable {
           }
         this.search = search;
     }
-    get startState(){};
-    get goalState(){}
-    getStateTransitions(state){}
-
-    
 }
 
 export default Searchable;

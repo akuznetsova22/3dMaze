@@ -1,10 +1,17 @@
 import Maze3dGenerator from "./maze3dGenerator.js";
-
+/**
+ * This class creates a maze using random division method
+ */
 class RandomDivisionMaze3dGenerator extends Maze3dGenerator{
     constructor(level, row, col){
         super(level, row, col);
     }
 
+    /**
+     * creates maze with no walls
+     * @param {Maze3d} maze 
+     * @returns Maze3d
+     */
     createChamber(maze){
         for (let i = 0; i < maze.length; i++){
             for (let j = 0; j < maze[0].length; j++){
@@ -15,6 +22,11 @@ class RandomDivisionMaze3dGenerator extends Maze3dGenerator{
         }
         return maze;
     }
+    /**
+     * creates random walls within the maze with exits
+     * @param {Maze3d} maze 
+     * @returns Maze3d
+     */
     fillWalls(maze){
         //create a random vertical wall with an exit
         let vertical = Math.floor(Math.random() * this.col);
@@ -30,15 +42,21 @@ class RandomDivisionMaze3dGenerator extends Maze3dGenerator{
         let exitHorizontal = Math.floor(Math.random() * this.col);
         for (let row = 0; row < maze[0].length; row++){
             for (let col = 0; col < maze[0][0].length; col ++)
-                if(row === horizontal && col!==exitHorizontal){
+                if(row === horizontal && col!== exitHorizontal){
                     maze[row][col][2] = true
             }else{
                 continue}
         }
         return maze;
     }
+
+    /**
+     * fills maze with walls and lifts
+     * @param {Maze3d} maze 
+     * @returns Maze3d
+     */
     buildMaze(maze){
-        //repeatedl build random walls with exits
+        //repeatedly build random walls with exits
         for (let level = 0; level < maze.maze.length; level++){
             for (let i = 0; i < 4; i++){
                 maze.maze[level] = this.fillWalls(maze.maze[level]);
@@ -49,6 +67,12 @@ class RandomDivisionMaze3dGenerator extends Maze3dGenerator{
         //Insert check whether there is a solution; else a loop until there is a solution
         return maze;
     }
+
+    /**
+     * breaks walls between levels of the maze
+     * @param {Maze3d} maze 
+     * @returns Maze3d
+     */
     createLifts(maze){
         for (let i = 0; i < Math.floor(this.row * this.col/2); i++){
             let upCol = Math.floor(Math.random() * this.col);
@@ -70,7 +94,9 @@ class RandomDivisionMaze3dGenerator extends Maze3dGenerator{
         }
         return maze
     }
-
+    /**
+     * generates the maze
+     */
     generate(){
         const start = [0, Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
         const finish = [this.level-1, Math.floor(Math.random() * this.row), Math.floor(Math.random() * this.col)];
@@ -89,6 +115,7 @@ class RandomDivisionMaze3dGenerator extends Maze3dGenerator{
             }
         }
         maze = this.buildMaze(maze);
+        //assures exits and entrances are accessible
         if (start[2]>0){
             maze.maze[start[0]][start[1]][start[2]] = [false,false,false,false,true,false]
         } else {
@@ -106,8 +133,9 @@ class RandomDivisionMaze3dGenerator extends Maze3dGenerator{
 }
 export default RandomDivisionMaze3dGenerator;
 
-
+/*
 let maze = new RandomDivisionMaze3dGenerator(2,7,6);
 let newMaze = maze.generate();
 console.log(maze);
 console.log(maze.measureAlgorithmTime())
+*/

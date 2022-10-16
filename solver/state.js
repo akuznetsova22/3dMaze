@@ -1,3 +1,6 @@
+/**
+ * This is an abstract class representing the state of the problem 
+ */
 class State {
     #key
 

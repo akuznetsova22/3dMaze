@@ -2,7 +2,7 @@ import DFSMaze3dGenerator from "/generation/DFSMaze3dGenerator.js";
 import DFS from "./solver/DFS.js";
 import BFS from "./solver/BFS.js";
 
-
+// assigning elements of the HTML
 const levels = document.getElementById('levels');
 const rows = document.getElementById('rows');
 const cols = document.getElementById('cols');
@@ -26,7 +26,7 @@ const saveGame = document.getElementById('save');
 const currGame = document.getElementById('game');
 const load = document.getElementById('loadGame');
 
-
+// declaring representation arrows codes 
 const up = '\u{2191}';
 const down = '\u{2193}';
 const upDown = '\u{2195}';
@@ -55,8 +55,6 @@ btnStart.addEventListener('click', e =>{
     solution.hidden = false;  
     saveGame.hidden = false;
     load.hidden = false;
-    
-
 
     // creating maze and drawing it on the console.
     let maze = new DFSMaze3dGenerator(levels.value, rows.value, cols.value).generate();
@@ -68,7 +66,6 @@ btnStart.addEventListener('click', e =>{
     let currLevel = 0;
     let currCell = start
     
-
     // drawing the maze on the html and marking the current location
     drawLevel(maze, currLevel);
     btnDisable(maze, currLevel, currLoc);
@@ -437,7 +434,11 @@ btnStart.addEventListener('click', e =>{
 
 });
 
-// returns size of the maze graph for the grid creation
+/**
+ * returns size of the maze graph for the grid creation
+ * @param {number} cols 
+ * @returns number
+ */
 function mazeWidth(cols){
     let size = '';
     for (let i = 0; i < cols; i++){
@@ -447,13 +448,20 @@ function mazeWidth(cols){
 
 }
 
-// marks current location with X
+/**
+ * marks current location with X
+ * @param {HTMLElement} cell 
+ */
 function markCurrent(cell){
     cell.textContent = 'X';
 
 }
 
-// draws maze in html
+/**
+ * draws maze in html
+ * @param {Maze3d} maze 
+ * @param {number} level 
+ */
 function drawLevel(maze,level){
     // create level indicator
     levelTitle.textContent = `Level ${level + 1}`
@@ -495,7 +503,12 @@ function drawLevel(maze,level){
     }
 };
 
-// anables and disables ladder indications where applicable
+/**
+ * anables and disables ladder indications where applicable
+ * @param {Maze3d} maze 
+ * @param {number} currLevel 
+ * @param {number} currLoc 
+ */
 function btnDisable(maze, currLevel,currLoc){
     let currRow = Math.floor(currLoc / 10);
     let currCol = currLoc % 10;
@@ -511,7 +524,13 @@ function btnDisable(maze, currLevel,currLoc){
     };
 };
 
-// draws ladder arrows where applicable
+/**
+ * draws ladder arrows where applicable
+ * @param {Maze3d} maze 
+ * @param {number} currLevel 
+ * @param {number} currLoc 
+ * @param {HTMLElement} currCell 
+ */
 function restoreArrows(maze, currLevel, currLoc, currCell){
     let currRow = Math.floor(currLoc / 10);
     let currCol = currLoc % 10;

@@ -45,6 +45,16 @@
         <input id="cols" type="text" required pattern="\d" placeholder="3">
        </div>
     <button id="start">Start New Game</button>
+    <div id = save hidden>
+        <label for="game">Enter name of the game you want to save</label>
+        <input id="game">
+        <button id="btnSave">Save Game</button>
+    </div>
+    <div id="loadGame" hidden>
+        <label for="savedGame">Enter name of the game you want to load</label>
+        <input id="savedGame">
+        <button id="load">Load Old Game</button>
+    </div>
         <div id="solution" hidden>
             <label for="algo">Search Algo: </label>
             <select id="algo">

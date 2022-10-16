@@ -19,6 +19,13 @@ const levelTitle = document.getElementById('lHeader');
 const G = document.getElementById('over');
 const solution = document.getElementById('solution');
 const btnHint = document.getElementById('hint');
+const btnSave = document.getElementById('btnSave');
+const btnLoad = document.getElementById('load');
+const loadGame = document.getElementById('savedGame');
+const saveGame = document.getElementById('save');
+const currGame = document.getElementById('game');
+const load = document.getElementById('loadGame');
+
 
 const up = '\u{2191}';
 const down = '\u{2193}';
@@ -45,17 +52,21 @@ btnStart.addEventListener('click', e =>{
     btnReset.hidden = false;
     instructions.hidden = false;
     levelTitle.hidden = false;
-    solution.hidden = false;    
+    solution.hidden = false;  
+    saveGame.hidden = false;
+    load.hidden = false;
+    
+
 
     // creating maze and drawing it on the console.
-    const maze = new DFSMaze3dGenerator(levels.value, rows.value, cols.value).generate();
+    let maze = new DFSMaze3dGenerator(levels.value, rows.value, cols.value).generate();
     console.log(maze.toString());
-    
+    //localStorage.setItem('maze', JSON.stringify(maze.maze));
+
     let start = document.getElementById('11');
     let currLoc = Number(start.id);
     let currLevel = 0;
-    localStorage.setItem('location', currLoc)
-    localStorage.setItem('level', currLevel);
+    
 
     // drawing the maze on the html and marking the current location
     drawLevel(maze, currLevel);
@@ -110,7 +121,6 @@ btnStart.addEventListener('click', e =>{
             idx++
         },300);
         setTimeout(() => {clearInterval(timerId);}, 300 * showSolution.length);
-        G.hidden = false;
     });
 
     btnHint.addEventListener('click', () => {
@@ -153,7 +163,66 @@ btnStart.addEventListener('click', e =>{
             },2000); 
         };
     });
-    
+    btnLoad.addEventListener('click', () => {
+        let gameName = loadGame.value;
+        let pastMaze = JSON.parse(localStorage.getItem(gameName));
+        if(pastMaze){
+            let rememberedLevel = Number(localStorage.getItem(`${gameName} level`));
+            let rememberedLoc = Number(localStorage.getItem(`${gameName} location`));
+            let rememberedLvls = Number(localStorage.getItem(`${gameName} levels`));
+            let rememberedRows = Number(localStorage.getItem(`${gameName} rows`));
+            let rememberedCols = Number(localStorage.getItem(`${gameName} cols`));
+            maze = new DFSMaze3dGenerator(rememberedLvls, rememberedRows, rememberedCols).generate();
+            maze.maze = pastMaze;
+            console.log(maze);
+
+            currLoc = rememberedLoc;
+            currLevel = rememberedLevel;
+            let currRow = Math.floor(currLoc / 10);
+            let currCol = currLoc % 10;
+            let currCell = document.getElementById(`${currRow}${currCol}`);
+
+            // creating design of the playing field with empty cells
+            mazeField.innerHTML = '';
+            mazeField.style.width = rememberedCols * 39 + 'px';
+            mazeField.style.gridTemplateColumns = mazeWidth(rememberedCols);
+            // each cell gets id accoring to its coordinates, starting from 11 (row 0, col 0)
+            for (let i = 0; i< rememberedRows; i++){
+                for (let j = 0; j < rememberedCols; j++){
+                    let square = document.createElement('div');
+                    square.classList.add('cell');
+                    square.id = `${i + 1}${j + 1}`
+                    mazeField.append(square);
+                }
+            }
+            // drawing the maze on the html and marking the current location
+            drawLevel(maze, currLevel);
+            btnDisable(maze, currLevel, currLoc);
+            markCurrent(currCell);
+        } else {
+            alert('No such game saved')
+        }
+    });
+
+    btnSave.addEventListener('click', () => {
+        let game = currGame.value;
+        if (!game){
+            alert('Please enter game name')
+        } else {
+            localStorage.setItem(`${game} location`, currLoc);
+            localStorage.setItem(`${game} level`, currLevel);
+            localStorage.setItem(game, JSON.stringify(maze.maze) );
+            localStorage.setItem(`${game} rows`, rows.value);
+            localStorage.setItem(`${game} cols`, cols.value);
+            localStorage.setItem(`${game} levels`, levels.value);
+            currGame.value = 'Saved!';
+            //alerting of success
+            setTimeout(() => {
+                currGame.value = '';
+            },2000); 
+        }
+
+    })
     // creating move commands
     document.addEventListener('keydown', e => {
         // location current coordinates
@@ -185,8 +254,6 @@ btnStart.addEventListener('click', e =>{
                 if (currLevel === levels.value -1 && currCell.id === `${rows.value}${cols.value}`){
                     G.hidden = false;
                 };
-
-                localStorage.setItem('location', currLoc);
             } else {
                 errorMsg.hidden = false;
             }
@@ -215,8 +282,6 @@ btnStart.addEventListener('click', e =>{
                 if (currLevel === levels.value - 1 && currCell.id === `${rows.value}${cols.value}`){
                     G.hidden = false;
                 };
-                localStorage.setItem('location', currLoc);
-
             }else {
                 errorMsg.hidden = false;
             }
@@ -244,7 +309,6 @@ btnStart.addEventListener('click', e =>{
                 if (currLevel === levels.value -1 && currCell.id === `${rows.value}${cols.value}`){
                     G.hidden = false;
                 };
-                localStorage.setItem('location', currLoc);
 
             }else {
                 errorMsg.hidden = false;
@@ -273,8 +337,6 @@ btnStart.addEventListener('click', e =>{
                 if (currLevel === levels.value -1 && currCell.id === `${rows.value}${cols.value}`){
                     G.hidden = false;
                 };
-                localStorage.setItem('location', currLoc);
-
             }else {
                 errorMsg.hidden = false;
             }
@@ -308,8 +370,6 @@ btnStart.addEventListener('click', e =>{
                 if (currLevel === levels.value - 1 && currCell.id === `${rows.value}${cols.value}`){
                     G.hidden = false;
                 };
-                localStorage.setItem('level', currLevel);
-
             }else {
                 errorMsg.hidden = false;
             }
@@ -337,8 +397,6 @@ btnStart.addEventListener('click', e =>{
                 if (currLevel === levels.value -1 && currCell.id === `${rows.value}${cols.value}`){
                     G.hidden = false;
                 };
-                localStorage.setItem('level', currLevel);
-
             }else {
                 errorMsg.hidden = false;
             }
@@ -368,9 +426,6 @@ btnStart.addEventListener('click', e =>{
 
         // adding indication of ladder availability
         btnDisable(maze,currLevel, currLoc);
-
-        localStorage.setItem('location', currLoc);
-
     });
 
 });

@@ -66,12 +66,13 @@ btnStart.addEventListener('click', e =>{
     let start = document.getElementById('11');
     let currLoc = Number(start.id);
     let currLevel = 0;
+    let currCell = start
     
 
     // drawing the maze on the html and marking the current location
     drawLevel(maze, currLevel);
     btnDisable(maze, currLevel, currLoc);
-    markCurrent(start);
+    markCurrent(currCell);
 
     btnSolve.addEventListener('click', () => {
         //implementing search algorithm starting from current location
@@ -165,8 +166,11 @@ btnStart.addEventListener('click', e =>{
     });
     btnLoad.addEventListener('click', () => {
         let gameName = loadGame.value;
+        let currCell;
         let pastMaze = JSON.parse(localStorage.getItem(gameName));
-        if(pastMaze){
+        //checking if game exists
+        if(pastMaze.length > 0){
+            //loading parameters
             let rememberedLevel = Number(localStorage.getItem(`${gameName} level`));
             let rememberedLoc = Number(localStorage.getItem(`${gameName} location`));
             let rememberedLvls = Number(localStorage.getItem(`${gameName} levels`));
@@ -174,13 +178,13 @@ btnStart.addEventListener('click', e =>{
             let rememberedCols = Number(localStorage.getItem(`${gameName} cols`));
             maze = new DFSMaze3dGenerator(rememberedLvls, rememberedRows, rememberedCols).generate();
             maze.maze = pastMaze;
-            console.log(maze);
-
+            console.log(maze.toString());
+            //assigning current location
             currLoc = rememberedLoc;
             currLevel = rememberedLevel;
             let currRow = Math.floor(currLoc / 10);
             let currCol = currLoc % 10;
-            let currCell = document.getElementById(`${currRow}${currCol}`);
+            currCell = document.getElementById(`${currRow}${currCol}`);
 
             // creating design of the playing field with empty cells
             mazeField.innerHTML = '';
@@ -195,28 +199,31 @@ btnStart.addEventListener('click', e =>{
                     mazeField.append(square);
                 }
             }
+            loadGame.value = '';
             // drawing the maze on the html and marking the current location
             drawLevel(maze, currLevel);
             btnDisable(maze, currLevel, currLoc);
             markCurrent(currCell);
+            loadGame.value = '';
         } else {
             alert('No such game saved')
         }
     });
-
     btnSave.addEventListener('click', () => {
         let game = currGame.value;
+        //checking if entered name of game session
         if (!game){
             alert('Please enter game name')
         } else {
+            //saving parameters to memory
             localStorage.setItem(`${game} location`, currLoc);
             localStorage.setItem(`${game} level`, currLevel);
             localStorage.setItem(game, JSON.stringify(maze.maze) );
             localStorage.setItem(`${game} rows`, rows.value);
             localStorage.setItem(`${game} cols`, cols.value);
             localStorage.setItem(`${game} levels`, levels.value);
-            currGame.value = 'Saved!';
             //alerting of success
+            currGame.value = 'Saved!';
             setTimeout(() => {
                 currGame.value = '';
             },2000); 
@@ -484,7 +491,6 @@ function drawLevel(maze,level){
             } else {
                 cell.textContent ='';
             }
-
         }
     }
 };
